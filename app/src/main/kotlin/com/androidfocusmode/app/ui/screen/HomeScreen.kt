@@ -125,8 +125,7 @@ fun HomeScreen(
                             onEditMode(focusMode.id)
                         },
                         onDelete = {
-                            // TODO: Show confirmation dialog
-                            viewModel.deleteFocusMode(focusMode)
+                            viewModel.deleteFocusMode(focusMode.id)
                         }
                     )
                 }

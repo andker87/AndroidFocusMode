@@ -20,7 +20,6 @@ class PermissionManager @Inject constructor(
     private val requiredPermissions = listOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION,
-        Manifest.permission.CHANGE_NOTIFICATION_POLICY,
         Manifest.permission.POST_NOTIFICATIONS,
         Manifest.permission.READ_PHONE_STATE,
         Manifest.permission.READ_CONTACTS

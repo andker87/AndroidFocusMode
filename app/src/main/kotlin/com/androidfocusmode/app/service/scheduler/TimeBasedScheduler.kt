@@ -1,7 +1,6 @@
 package com.androidfocusmode.app.service.scheduler
 
 import android.content.Context
-import androidx.work.BackoffPolicy
 import androidx.work.Data
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
@@ -34,7 +33,6 @@ class TimeBasedScheduler @Inject constructor(
             15, TimeUnit.MINUTES // Check every 15 minutes
         )
             .setInputData(startTimeData)
-            .setBackoffPolicy(BackoffPolicy.LINEAR, 15, TimeUnit.MINUTES)
             .addTag("time_based_${focusMode.id}")
             .build()
 

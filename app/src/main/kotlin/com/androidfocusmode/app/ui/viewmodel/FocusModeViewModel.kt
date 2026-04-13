@@ -112,9 +112,12 @@ class FocusModeViewModel @Inject constructor(
         }
     }
 
-    fun deleteFocusMode(focusMode: FocusMode) {
+    fun deleteFocusMode(modeId: Long) {
         viewModelScope.launch {
-            repository.deleteMode(focusMode)
+            val mode = repository.getModeById(modeId)
+            if (mode != null) {
+                repository.deleteMode(mode)
+            }
         }
     }
 

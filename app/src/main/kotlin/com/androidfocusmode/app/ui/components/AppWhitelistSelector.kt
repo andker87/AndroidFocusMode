@@ -58,7 +58,6 @@ fun AppWhitelistSelector(
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(max = 300.dp)
         ) {
             items(availableApps) { app ->
                 AppWhitelistItem(
@@ -113,9 +112,4 @@ fun AppWhitelistItem(
             onCheckedChange = onSelected
         )
     }
-}
-
-// Extension function for LazyListScope
-fun androidx.compose.foundation.lazy.LazyListScope.heightIn(max: androidx.compose.ui.unit.Dp) {
-    // This is a workaround - LazyColumn has its own height management
 }

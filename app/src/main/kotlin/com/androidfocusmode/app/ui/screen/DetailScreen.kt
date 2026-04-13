@@ -150,17 +150,17 @@ fun DetailScreen(
                 color = MaterialTheme.colorScheme.onSurface
             )
 
-            SingleChoiceSegmentedButtonRow(
-                modifier = Modifier.fillMaxWidth()
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                ActivationTrigger.values().forEachIndexed { index, trigger ->
-                    SegmentedButton(
-                        selected = selectedTrigger == trigger,
+                ActivationTrigger.values().forEach { trigger ->
+                    OutlinedButton(
                         onClick = { selectedTrigger = trigger },
-                        shape = RoundedCornerShape(8.dp),
                         modifier = Modifier
                             .weight(1f)
-                            .height(40.dp)
+                            .padding(end = 4.dp)
                     ) {
                         Text(
                             text = when (trigger) {
@@ -168,7 +168,7 @@ fun DetailScreen(
                                 ActivationTrigger.TIME_BASED -> "Time"
                                 ActivationTrigger.LOCATION_BASED -> "Location"
                             },
-                            fontSize = 12.sp
+                            fontSize = 10.sp
                         )
                     }
                 }
