@@ -27,8 +27,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SegmentedButton
-import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -78,14 +76,6 @@ fun DetailScreen(
     var locationName by remember { mutableStateOf("") }
     var radiusMeters by remember { mutableStateOf("100") }
     var minDwellMinutes by remember { mutableStateOf("5") }
-
-    // Load mode if editing
-    LaunchedEffect(modeId) {
-        if (modeId > 0) {
-            val loadedMode = viewModel.focusModes.value.find { it.id == modeId }
-            // TODO: Load full mode from repository
-        }
-    }
 
     Scaffold(
         topBar = {
@@ -152,7 +142,7 @@ fun DetailScreen(
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 ActivationTrigger.values().forEach { trigger ->
@@ -160,7 +150,8 @@ fun DetailScreen(
                         onClick = { selectedTrigger = trigger },
                         modifier = Modifier
                             .weight(1f)
-                            .padding(end = 4.dp)
+                            .height(40.dp),
+                        shape = RoundedCornerShape(8.dp)
                     ) {
                         Text(
                             text = when (trigger) {
