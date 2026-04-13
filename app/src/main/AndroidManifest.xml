@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Location Permissions -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
+    <!-- Notification Permissions -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- DND / Notification Policy -->
+    <uses-permission android:name="android.permission.CHANGE_NOTIFICATION_POLICY" />
+
+    <!-- Scheduling Alarms -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
+    <!-- Phone State (for call detection) -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <!-- Contacts (to read favorites) -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <!-- Bluetooth Control -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
+    <!-- Wi-Fi Control -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <!-- Network State -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Vibration -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <!-- Wake Lock (for background tasks) -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- Android Auto Detection -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_descriptor"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AndroidFocusMode"
+        android:usesCleartextTraffic="false">
+
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AndroidFocusMode">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Receiver for Boot Completion -->
+        <receiver
+            android:name=".receiver.BootCompleteReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Receiver for Geofence Events -->
+        <receiver
+            android:name=".receiver.GeofenceReceiver"
+            android:exported="false" />
+
+        <!-- Service for Location Updates -->
+        <service
+            android:name=".service.LocationService"
+            android:exported="false"
+            android:foregroundServiceType="location" />
+
+        <!-- Foreground Service for DND Management -->
+        <service
+            android:name=".service.FocusModeService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
+
+    </application>
+
+</manifest>

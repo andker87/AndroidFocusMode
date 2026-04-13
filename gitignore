@@ -1,0 +1,60 @@
+# Gradle files
+.gradle/
+build/
+gradle/
+*.apk
+*.aar
+*.ap_
+*.aab
+
+# Local configuration file
+local.properties
+
+# Android Studio
+.idea/
+*.iml
+*.iws
+*.ipr
+.classpath
+.project
+.settings/
+gen/
+bin/
+
+# IntelliJ
+out/
+*.hprof
+*.class
+
+# Misc
+.DS_Store
+.AppleDouble
+.LSOverride
+.#*
+
+# Lint
+lint-results.xml
+lint-report.html
+
+# Signing configs
+signing.properties
+*.jks
+*.keystore
+
+# Compiled files
+*.o
+*.a
+*.so
+*.so.*
+*.dylib
+
+# Node modules (if needed)
+node_modules/
+
+# Private keys
+*.pem
+*.key
+
+# Test coverage
+coverage/
+.coverage

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Android Focus Mode</string>
+    <string name="app_description">Take control of your notifications</string>
+    
+    <!-- Home Screen -->
+    <string name="home_title">Android Focus Mode</string>
+    <string name="home_subtitle">Take control of your notifications</string>
+    <string name="home_empty_title">No focus modes yet</string>
+    <string name="home_empty_message">Create your first mode to get started</string>
+    
+    <!-- Focus Modes -->
+    <string name="mode_normal">Normal</string>
+    <string name="mode_normal_desc">All apps and notifications enabled</string>
+    <string name="mode_night">Night</string>
+    <string name="mode_night_desc">Sleep mode - only favorites and emergency calls</string>
+    <string name="mode_driving">Driving</string>
+    <string name="mode_driving_desc">Manual activation - silences all notifications except calls</string>
+    <string name="mode_gym">Gym</string>
+    <string name="mode_gym_desc">Auto-activate by location - no notifications during workout</string>
+    <string name="mode_work">Work</string>
+    <string name="mode_work_desc">Office mode - limit notifications, only work contacts</string>
+    
+    <!-- Triggers -->
+    <string name="trigger_manual">Manual</string>
+    <string name="trigger_time">Time-based</string>
+    <string name="trigger_location">Location</string>
+    
+    <!-- Settings Labels -->
+    <string name="allowed_apps">Allowed Apps</string>
+    <string name="notifications_sound">Notifications &amp; Sound</string>
+    <string name="call_settings">Call Settings</string>
+    <string name="allow_notifications">Allow Notifications</string>
+    <string name="allow_vibration">Allow Vibration</string>
+    <string name="allow_all_calls">Allow All Calls</string>
+    <string name="favorites_only">Favorites Only</string>
+    <string name="block_all_calls">Block All Calls</string>
+    <string name="android_auto">Activate on Android Auto</string>
+    
+    <!-- Buttons -->
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="create_new">Create New Mode</string>
+    
+    <!-- Notifications -->
+    <string name="focus_mode_active">Focus Mode Active</string>
+    <string name="focus_mode_activated">%s is now active</string>
+    <string name="focus_mode_deactivated">Focus mode deactivated</string>
+</resources>
