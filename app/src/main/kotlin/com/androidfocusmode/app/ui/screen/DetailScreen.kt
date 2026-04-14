@@ -1,8 +1,6 @@
 package com.androidfocusmode.app.ui.screen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,7 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -31,20 +28,19 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.androidfocusmode.app.data.model.ActivationTrigger
 import com.androidfocusmode.app.data.model.FocusMode
+import com.androidfocusmode.app.ui.components.LocationInput
 import com.androidfocusmode.app.ui.components.TimeInput
 import com.androidfocusmode.app.ui.viewmodel.FocusModeViewModel
 
@@ -55,7 +51,6 @@ fun DetailScreen(
     onBackClick: () -> Unit,
     viewModel: FocusModeViewModel = hiltViewModel()
 ) {
-    var focusMode by remember { mutableStateOf<FocusMode?>(null) }
     var modeName by remember { mutableStateOf("") }
     var modeDescription by remember { mutableStateOf("") }
     var selectedTrigger by remember { mutableStateOf(ActivationTrigger.MANUAL) }
@@ -71,8 +66,8 @@ fun DetailScreen(
     var endTime by remember { mutableStateOf<String?>(null) }
     
     // Location-based
-    var latitude by remember { mutableStateOf<String>("") }
-    var longitude by remember { mutableStateOf<String>("") }
+    var latitude by remember { mutableStateOf("") }
+    var longitude by remember { mutableStateOf("") }
     var locationName by remember { mutableStateOf("") }
     var radiusMeters by remember { mutableStateOf("100") }
     var minDwellMinutes by remember { mutableStateOf("5") }
@@ -150,8 +145,7 @@ fun DetailScreen(
                         onClick = { selectedTrigger = trigger },
                         modifier = Modifier
                             .weight(1f)
-                            .height(40.dp),
-                        shape = RoundedCornerShape(8.dp)
+                            .height(40.dp)
                     ) {
                         Text(
                             text = when (trigger) {
@@ -182,36 +176,15 @@ fun DetailScreen(
 
             // Location-based configuration
             if (selectedTrigger == ActivationTrigger.LOCATION_BASED) {
-                OutlinedTextField(
-                    value = locationName,
-                    onValueChange = { locationName = it },
-                    label = { Text("Location Name (e.g., Gym, Work)") },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
-                )
-
-                OutlinedTextField(
-                    value = latitude,
-                    onValueChange = { latitude = it },
-                    label = { Text("Latitude") },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
-                )
-
-                OutlinedTextField(
-                    value = longitude,
-                    onValueChange = { longitude = it },
-                    label = { Text("Longitude") },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
-                )
-
-                OutlinedTextField(
-                    value = radiusMeters,
-                    onValueChange = { radiusMeters = it },
-                    label = { Text("Radius (meters)") },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
+                LocationInput(
+                    locationName = locationName,
+                    latitude = latitude,
+                    longitude = longitude,
+                    radius = radiusMeters,
+                    onLocationNameChange = { locationName = it },
+                    onLatitudeChange = { latitude = it },
+                    onLongitudeChange = { longitude = it },
+                    onRadiusChange = { radiusMeters = it }
                 )
 
                 OutlinedTextField(
@@ -378,3 +351,57 @@ fun DetailScreen(
         }
     }
 }
+EOF
+cat /home/claude/AndroidFocusMode/app/src/main/kotlin/com/androidfocusmode/app/ui/screen/DetailScreen.kt | head -50
+Output
+
+package com.androidfocusmode.app.ui.screen
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.androidfocusmode.app.data.model.ActivationTrigger
+import com.androidfocusmode.app.data.model.FocusMode
+import com.androidfocusmode.app.ui.components.LocationInput
+import com.androidfocusmode.app.ui.components.TimeInput
+import com.androidfocusmode.app.ui.viewmodel.FocusModeViewModel
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DetailScreen(
+    modeId: Long,
