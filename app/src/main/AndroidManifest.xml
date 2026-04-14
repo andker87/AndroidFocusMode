@@ -75,12 +75,6 @@
             android:name=".receiver.GeofenceReceiver"
             android:exported="false" />
 
-        <!-- Service for Location Updates -->
-        <service
-            android:name=".service.LocationService"
-            android:exported="false"
-            android:foregroundServiceType="location" />
-
         <!-- Foreground Service for DND Management -->
         <service
             android:name=".service.FocusModeService"
