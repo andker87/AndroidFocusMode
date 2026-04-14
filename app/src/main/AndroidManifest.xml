@@ -75,12 +75,6 @@
             android:name=".receiver.GeofenceReceiver"
             android:exported="false" />
 
-        <!-- Foreground Service for DND Management -->
-        <service
-            android:name=".service.FocusModeService"
-            android:exported="false"
-            android:foregroundServiceType="dataSync" />
-
     </application>
 
 </manifest>
