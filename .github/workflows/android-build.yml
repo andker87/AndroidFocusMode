@@ -6,46 +6,78 @@ on:
   pull_request:
     branches: [ main, develop ]
 
+permissions:
+  contents: write
+ 
 jobs:
   build:
+    name: Build & Sign APK
     runs-on: ubuntu-latest
-
+    
     steps:
-    - uses: actions/checkout@v4
-
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: gradle
-
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
-
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-
-    - name: Build
-      run: ./gradlew build --no-daemon
-
-    - name: Assemble Debug APK
-      run: ./gradlew assembleDebug
-
-    - name: Assemble Release APK
-      run: ./gradlew assembleRelease
-
-    - name: Upload APK
-      uses: actions/upload-artifact@v4
-      with:
-        name: apk
-        path: |
-          app/build/outputs/apk/debug/*.apk
-          app/build/outputs/apk/release/*.apk
-
-    - name: Upload Reports
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: reports
-        path: app/build/reports/
+      - uses: actions/checkout@v4
+      
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+      
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+      
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      
+      - name: Build APK
+        run: |
+          if [ "${{ github.event.inputs.build_type }}" = "release" ]; then
+            ./gradlew assembleRelease --no-daemon
+          else
+            ./gradlew assembleDebug --no-daemon
+          fi
+      
+      - name: Generate Debug Keystore
+        run: |
+          keytool -genkey -v -keystore debug.keystore -alias androiddebugkey \
+            -keyalg RSA -keysize 2048 -validity 10000 \
+            -storepass android -keypass android \
+            -dname "CN=Android Debug,O=Android,C=US"
+      
+      - name: Sign and Align APK
+        run: |
+          BUILD_TYPE="${{ github.event.inputs.build_type }}"
+          if [ "$BUILD_TYPE" = "release" ]; then
+            INPUT_APK="app/build/outputs/apk/release/app-release-unsigned.apk"
+            OUTPUT_APK="app-release-signed.apk"
+          else
+            INPUT_APK="app/build/outputs/apk/debug/app-debug.apk"
+            OUTPUT_APK="app-debug-signed.apk"
+          fi
+          
+          # Get the build tools version
+          BUILD_TOOLS_VERSION=$(ls ${ANDROID_HOME}/build-tools | sort -V | tail -1)
+          echo "Using build tools: $BUILD_TOOLS_VERSION"
+          
+          # Align APK
+          ${ANDROID_HOME}/build-tools/${BUILD_TOOLS_VERSION}/zipalign -v 4 \
+            "$INPUT_APK" app-aligned.apk
+          
+          # Sign APK
+          ${ANDROID_HOME}/build-tools/${BUILD_TOOLS_VERSION}/apksigner sign \
+            --ks debug.keystore \
+            --ks-key-alias androiddebugkey \
+            --ks-pass pass:android \
+            --key-pass pass:android \
+            --out "$OUTPUT_APK" \
+            app-aligned.apk
+          
+          ls -lh "$OUTPUT_APK"
+      
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-focus-mode-apk
+          path: app-*-signed.apk
+          retention-days: 5
