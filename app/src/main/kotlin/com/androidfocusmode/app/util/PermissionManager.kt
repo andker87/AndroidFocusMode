@@ -22,7 +22,6 @@ class PermissionManager @Inject constructor(
     private val notificationPermission = Manifest.permission.POST_NOTIFICATIONS
 
     fun hasPermission(permission: String): Boolean {
-        // POST_NOTIFICATIONS exists only on 33+. Below that, treat as granted.
         if (permission == notificationPermission && Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             return true
         }
@@ -50,13 +49,9 @@ class PermissionManager @Inject constructor(
         }
     }
 
-    fun hasPhoneStatePermission(): Boolean {
-        return hasPermission(Manifest.permission.READ_PHONE_STATE)
-    }
+    fun hasPhoneStatePermission(): Boolean = hasPermission(Manifest.permission.READ_PHONE_STATE)
 
-    fun hasContactsPermission(): Boolean {
-        return hasPermission(Manifest.permission.READ_CONTACTS)
-    }
+    fun hasContactsPermission(): Boolean = hasPermission(Manifest.permission.READ_CONTACTS)
 
     private fun getRequiredPermissions(): List<String> {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -66,4 +61,3 @@ class PermissionManager @Inject constructor(
         }
     }
 }
-``
