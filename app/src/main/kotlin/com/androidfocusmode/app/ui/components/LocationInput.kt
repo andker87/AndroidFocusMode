@@ -18,7 +18,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -147,8 +146,8 @@ fun SimpleMapPicker(
     onLocationSelected: (Double, Double) -> Unit,
     onDismiss: () -> Unit
 ) {
-    val selectedLat = remember { mutableDoubleStateOf(currentLat) }
-    val selectedLng = remember { mutableDoubleStateOf(currentLng) }
+    val selectedLat = remember { mutableStateOf(currentLat) }
+    val selectedLng = remember { mutableStateOf(currentLng) }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -175,8 +174,8 @@ fun SimpleMapPicker(
 
                 Button(
                     onClick = {
-                        selectedLat.doubleValue = 45.4642
-                        selectedLng.doubleValue = 9.1900
+                        selectedLat.value = 45.4642
+                        selectedLng.value = 9.1900
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -184,20 +183,16 @@ fun SimpleMapPicker(
                 }
 
                 OutlinedTextField(
-                    value = selectedLat.doubleValue.toString(),
-                    onValueChange = {
-                        selectedLat.doubleValue = it.toDoubleOrNull() ?: selectedLat.doubleValue
-                    },
+                    value = selectedLat.value.toString(),
+                    onValueChange = { selectedLat.value = it.toDoubleOrNull() ?: selectedLat.value },
                     label = { Text("Latitude") },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
                 )
 
                 OutlinedTextField(
-                    value = selectedLng.doubleValue.toString(),
-                    onValueChange = {
-                        selectedLng.doubleValue = it.toDoubleOrNull() ?: selectedLng.doubleValue
-                    },
+                    value = selectedLng.value.toString(),
+                    onValueChange = { selectedLng.value = it.toDoubleOrNull() ?: selectedLng.value },
                     label = { Text("Longitude") },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
@@ -205,13 +200,14 @@ fun SimpleMapPicker(
             }
         },
         confirmButton = {
-            TextButton(
-                onClick = { onLocationSelected(selectedLat.doubleValue, selectedLng.doubleValue) }
-            ) { Text("OK") }
+            TextButton(onClick = { onLocationSelected(selectedLat.value, selectedLng.value) }) {
+                Text("OK")
+            }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text("Cancel") }
+            TextButton(onClick = onDismiss) {
+                Text("Cancel")
+            }
         }
     )
 }
-``
